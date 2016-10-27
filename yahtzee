@@ -1,0 +1,62 @@
+#!/bin/bash -
+#
+# SCRIPT: yahtzee
+# AUTHOR: Luciano D. Cecere
+# DATE: 09/25/2015-08:22:12 PM
+#
+########################################################################
+#
+# yahtzee - the classic dice game - 1 player
+# Copyright (C) 2015 Luciano D. Cecere <ldante86@aol.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+########################################################################
+
+export PATH=/bin:/usr/bin
+unalias -a
+
+set -e
+. globals.sh
+. screen.sh
+. game.sh
+. utils.sh
+set +e
+
+case $1 in
+  -[Hh]*|--[Hh]*)  _usage && exit 0
+esac
+
+trap '_abort' INT
+
+_splash
+
+while _add_total
+do
+  B1="$BOLD"
+  B2="$BOLD"
+  B3="$BOLD"
+  B4="$BOLD"
+  B5="$BOLD"
+
+  _roll_dice 5
+  _select_dice
+  _show_dice
+  _show_game_sheet
+
+  _show_dice
+  _show_game_sheet
+  _detect_pattern
+  _select_category
+done
